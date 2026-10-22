@@ -10,6 +10,7 @@ folder: animal-lovers
 tags: [Facebook, Reels, Copywriting, Community management, Analítica]
 order: 0
 dashboard: true
+website: { url: 'https://www.facebook.com/ConejosCute', label: 'Ver la página en Facebook' }
 ---
 
 ## El reto

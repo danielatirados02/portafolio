@@ -10,6 +10,7 @@ coverPosition: center
 folder: outrix-intelligence
 tags: [Brandbook, Identidad visual, Estrategia de contenido, Redes sociales]
 order: 1
+website: { url: 'https://outrixintelligence.com/', label: 'Visitar outrixintelligence.com' }
 ---
 
 ## El reto

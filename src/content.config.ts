@@ -19,6 +19,7 @@ const proyectos = defineCollection({
       tags: z.array(z.string()).default([]),
       order: z.number(),
       dashboard: z.boolean().default(false),
+      website: z.object({ url: z.string().url(), label: z.string() }).optional(),
       galleryLabels: z.array(z.string()).default([]),
     }),
 });

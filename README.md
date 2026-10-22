@@ -89,6 +89,10 @@ npm run preview   # sirve la versión compilada
    ...
    ```
 
+**Actualizar el CV descargable:** reemplazar `public/cv/CV_Daniela_Tirado.pdf` por la nueva versión con el mismo nombre. Los botones «Descargar CV» del menú, la portada y la sección de contacto apuntan a ese archivo (ruta definida en `person.cv` de `src/data/site.ts`).
+
+**Enlace externo de un proyecto:** agregar en el encabezado del `.md` la línea `website: { url: 'https://...', label: 'Texto del botón' }`.
+
 **Actualizar las métricas de Facebook:**
 
 1. Exportar desde Meta Business Suite los CSV de visualizaciones, interacciones, seguidores, visitas, público y formatos.

@@ -8,6 +8,7 @@ export const person = {
   phone: '+57 302 210 7400',
   whatsapp: 'https://wa.me/573022107400',
   linkedin: 'https://www.linkedin.com/in/daniela-tirado-marketing-digital/',
+  cv: 'cv/CV_Daniela_Tirado.pdf',
   description:
     'Portafolio de Daniela Tirado, líder de marketing, marca y contenido. Branding, estrategia de contenido y gestión de redes sociales con resultados medibles.',
 };
@@ -21,6 +22,7 @@ export const experience = [
     summary:
       'Dirijo la marca y el contenido de una empresa tecnológica B2B de inteligencia artificial, analítica de datos y automatización. Construí su identidad visual y su brandbook, definí la estrategia de comunicación y los pilares de contenido, y creé a Orix, el portavoz de la marca.',
     link: 'proyectos/outrix-intelligence',
+    website: { url: 'https://outrixintelligence.com/', label: 'outrixintelligence.com' },
   },
   {
     role: 'Creadora y gestora de contenido',
@@ -30,6 +32,7 @@ export const experience = [
     summary:
       'Gestiono el contenido de una comunidad de amantes de los animales. Desde que asumí la página, las visualizaciones pasaron de unas 5.000 al mes a más de 4 millones de promedio mensual, y la página sumó más de 18.000 seguidores nuevos en siete meses.',
     link: 'proyectos/animal-lovers',
+    website: { url: 'https://www.facebook.com/ConejosCute', label: 'Ver en Facebook' },
   },
 ];
 

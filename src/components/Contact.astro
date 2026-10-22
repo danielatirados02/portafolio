@@ -23,6 +23,9 @@ import { person } from '../data/site';
       <li>
         <a href={person.linkedin} target="_blank" rel="noopener" class="nav-link font-medium">LinkedIn</a>
       </li>
+      <li>
+        <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/${person.cv}`} download class="nav-link font-medium">Descargar CV (PDF)</a>
+      </li>
       <li class="text-gray-400">{person.location}</li>
     </ul>
   </div>
