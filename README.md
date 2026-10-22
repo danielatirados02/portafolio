@@ -2,7 +2,7 @@
 
 Sitio personal de **Daniela Tirado**, líder de marketing, marca y contenido. Reúne su trayectoria, sus estudios, cinco casos de estudio (branding, diseño de contenido, logotipos, rebranding y gestión de redes) y un dashboard con las métricas reales de la página de Facebook *Animal Lovers*.
 
-**Sitio publicado:** https://USUARIO.github.io/portafolio/
+**Sitio publicado:** https://danielatirados02.github.io/portafolio/
 
 ## Stack
 
