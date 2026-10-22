@@ -25,11 +25,6 @@ for (const [folder, slug] of Object.entries(map)) {
   console.log(`${slug}: ${files.length} imágenes`);
 }
 
-// Portada fotográfica del brandbook
-await sharp(path.join(SRC, 'Brandbook OI', 'pomelli_photoshoot-1.png'))
-  .jpeg({ quality: 88 })
-  .toFile(path.join(DEST, 'outrix-intelligence', 'portada.jpg'));
-
 // Foto de perfil: se recorta el borde inferior para quitar el sello de la esquina
 await sharp('me.png')
   .extract({ left: 0, top: 0, width: 880, height: 1100 })

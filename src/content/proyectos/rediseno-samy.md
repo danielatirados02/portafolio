@@ -4,11 +4,12 @@ client: Samy Cosmetics
 category: Rebranding
 year: '2025'
 summary: Llevé la identidad de una marca de cosméticos de una estética maximalista a una propuesta minimalista, limpia y más sofisticada.
-cover: ../../assets/proyectos/rediseno-samy/01.jpg
-coverAlt: Moodboard del rediseño de Samy Cosmetics con paleta rosa y lila, productos y tipografía
+cover: ../../assets/proyectos/rediseno-samy/02.jpg
+coverAlt: Propuesta minimalista de Samy Cosmetics con paleta neutra, tipografía serif y productos
 folder: rediseno-samy
 tags: [Rebranding, Moodboard, Paleta de color, Tipografía]
 order: 4
+galleryLabels: ['Antes: identidad maximalista', 'Después: propuesta minimalista']
 ---
 
 ## El reto

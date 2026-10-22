@@ -4,8 +4,8 @@ client: Outrix Intelligence
 category: Branding y estrategia digital
 year: '2025 – 2026'
 summary: Construí desde cero la identidad, el brandbook y la línea de contenido de una empresa tecnológica B2B de inteligencia artificial y automatización.
-cover: ../../assets/proyectos/outrix-intelligence/portada.jpg
-coverAlt: Logotipo de Outrix Intelligence en relieve metálico sobre la fachada de un edificio
+cover: ../../assets/proyectos/outrix-intelligence/01.jpg
+coverAlt: Logotipo de Outrix Intelligence en la portada de su brandbook
 coverPosition: center
 folder: outrix-intelligence
 tags: [Brandbook, Identidad visual, Estrategia de contenido, Redes sociales]

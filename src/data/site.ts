@@ -42,7 +42,7 @@ export const education = [
   },
   {
     title: 'Auxiliar Administrativo',
-    school: 'Cetecox',
+    school: 'Corporación de Estudios Técnicos Ocupacional Sistematizada',
     period: '2023',
     status: 'Finalizado',
   },

@@ -6,14 +6,18 @@ import type { ImageMetadata } from 'astro';
 interface Props {
   folder: string;
   title: string;
-  exclude?: string[];
+  /** Rótulos opcionales por imagen, por ejemplo «Antes» y «Después» */
+  labels?: string[];
 }
 
-const { folder, title, exclude = [] } = Astro.props;
-const all = import.meta.glob<{ default: ImageMetadata }>('/src/assets/proyectos/**/*.{jpg,jpeg,png}');
+const { folder, title, labels = [] } = Astro.props;
+// Animal Lovers usa su propia vitrina (FacebookShowcase), por eso se excluye
+const all = import.meta.glob<{ default: ImageMetadata }>([
+  '/src/assets/proyectos/**/*.{jpg,jpeg,png}',
+  '!/src/assets/proyectos/animal-lovers/**',
+]);
 const paths = Object.keys(all)
   .filter((p) => p.startsWith(`/src/assets/proyectos/${folder}/`))
-  .filter((p) => !exclude.some((e) => p.endsWith(`/${e}`)))
   .sort();
 const images = await Promise.all(
   paths.map(async (p) => {
@@ -22,26 +26,32 @@ const images = await Promise.all(
     return { src, full: full.src };
   }),
 );
+// Con pocas imágenes se usa una cuadrícula centrada en vez de columnas tipo masonry
+const few = images.length <= 2;
+const altFor = (i: number) => `${title}: ${labels[i] ?? `pieza ${i + 1} de ${images.length}`}`;
 ---
 
-<div class="columns-1 gap-6 sm:columns-2 lg:columns-3 [&>*]:mb-6">
+<div class:list={few ? 'grid items-center gap-8 sm:grid-cols-2' : 'columns-1 gap-6 sm:columns-2 lg:columns-3 *:mb-6'}>
   {
     images.map((img, i) => (
-      <button
-        type="button"
-        class="group block w-full break-inside-avoid overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-xl"
-        data-lightbox={i}
-        data-full={img.full}
-        aria-label={`Ampliar imagen ${i + 1} de ${images.length}`}
-      >
-        <Image
-          src={img.src}
-          alt={`${title}: pieza ${i + 1} de ${images.length}`}
-          widths={[400, 700]}
-          sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 95vw"
-          class="h-auto w-full transition-transform duration-500 group-hover:scale-[1.02]"
-        />
-      </button>
+      <figure class="break-inside-avoid">
+        {labels[i] && <figcaption class="mb-3 text-center text-sm font-bold tracking-wider text-brand-deep uppercase">{labels[i]}</figcaption>}
+        <button
+          type="button"
+          class="group block w-full overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-xl"
+          data-lightbox={i}
+          data-full={img.full}
+          aria-label={`Ampliar imagen ${i + 1} de ${images.length}`}
+        >
+          <Image
+            src={img.src}
+            alt={altFor(i)}
+            widths={[400, 700, 1000]}
+            sizes={few ? '(min-width: 640px) 45vw, 95vw' : '(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 95vw'}
+            class="h-auto w-full transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        </button>
+      </figure>
     ))
   }
 </div>
