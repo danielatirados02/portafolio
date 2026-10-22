@@ -1,0 +1,350 @@
+{
+  "source": "Meta Business Suite, exportación del 1 de enero al 31 de diciembre de 2025",
+  "page": {
+    "name": "Animal Lovers",
+    "url": "https://www.facebook.com/ConejosCute"
+  },
+  "startMonth": "2025-06",
+  "months": [
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12"
+  ],
+  "series": {
+    "visualizaciones": [
+      4557,
+      7353,
+      6098,
+      4176,
+      4089,
+      2765005,
+      3571168,
+      4308711,
+      5931307,
+      4780008,
+      3342240,
+      4478130
+    ],
+    "interacciones": [
+      52,
+      242,
+      170,
+      32,
+      64,
+      104955,
+      118293,
+      144405,
+      236487,
+      201396,
+      168572,
+      166303
+    ],
+    "seguidores": [
+      2,
+      9,
+      7,
+      6,
+      6,
+      2642,
+      3158,
+      2938,
+      3359,
+      1680,
+      2421,
+      2265
+    ],
+    "visitas": [
+      78,
+      114,
+      68,
+      53,
+      70,
+      9743,
+      11526,
+      13231,
+      18469,
+      13799,
+      13930,
+      15019
+    ]
+  },
+  "formatos": {
+    "publicado": [
+      {
+        "label": "Reels",
+        "value": 157
+      },
+      {
+        "label": "Fotos",
+        "value": 43
+      },
+      {
+        "label": "Historias",
+        "value": 0
+      }
+    ],
+    "visualizaciones": [
+      {
+        "label": "Reels",
+        "value": 39137176
+      },
+      {
+        "label": "Foto",
+        "value": 3577400
+      },
+      {
+        "label": "Historias",
+        "value": 88960
+      },
+      {
+        "label": "Enlaces",
+        "value": 26062
+      },
+      {
+        "label": "Varias fotos",
+        "value": 6968
+      },
+      {
+        "label": "Otros",
+        "value": 668
+      },
+      {
+        "label": "Texto",
+        "value": 406
+      }
+    ],
+    "interacciones": [
+      {
+        "label": "Reels",
+        "value": 1306543
+      },
+      {
+        "label": "Foto",
+        "value": 123052
+      },
+      {
+        "label": "Historias",
+        "value": 9108
+      },
+      {
+        "label": "Enlaces",
+        "value": 2632
+      },
+      {
+        "label": "Varias fotos",
+        "value": 106
+      },
+      {
+        "label": "Otros",
+        "value": 13
+      },
+      {
+        "label": "Texto",
+        "value": 2
+      }
+    ]
+  },
+  "publico": {
+    "paises": [
+      {
+        "label": "México",
+        "value": 34.2
+      },
+      {
+        "label": "Colombia",
+        "value": 7.9
+      },
+      {
+        "label": "Estados Unidos",
+        "value": 7.3
+      },
+      {
+        "label": "Perú",
+        "value": 6.3
+      },
+      {
+        "label": "Argentina",
+        "value": 4.5
+      },
+      {
+        "label": "Venezuela",
+        "value": 3.3
+      },
+      {
+        "label": "Chile",
+        "value": 2.5
+      },
+      {
+        "label": "España",
+        "value": 2.1
+      },
+      {
+        "label": "Ecuador",
+        "value": 1.9
+      },
+      {
+        "label": "Guatemala",
+        "value": 1.9
+      }
+    ],
+    "edadSexo": [
+      {
+        "age": "18-24",
+        "mujeres": 13.9,
+        "hombres": 3.5
+      },
+      {
+        "age": "25-34",
+        "mujeres": 27.3,
+        "hombres": 10.4
+      },
+      {
+        "age": "35-44",
+        "mujeres": 16.5,
+        "hombres": 6.9
+      },
+      {
+        "age": "45-54",
+        "mujeres": 9.3,
+        "hombres": 4.1
+      },
+      {
+        "age": "55-64",
+        "mujeres": 3.7,
+        "hombres": 1.8
+      },
+      {
+        "age": "65+",
+        "mujeres": 1.7,
+        "hombres": 0.9
+      }
+    ],
+    "ciudades": [
+      {
+        "label": "Ciudad de México, México",
+        "value": 3.9
+      },
+      {
+        "label": "Lima, Perú",
+        "value": 2.8
+      },
+      {
+        "label": "Bogotá, Colombia",
+        "value": 1.3
+      },
+      {
+        "label": "Santiago de Chile, Chile",
+        "value": 1
+      },
+      {
+        "label": "Guadalajara, Jalisco, México",
+        "value": 0.6
+      },
+      {
+        "label": "Guatemala, Guatemala",
+        "value": 0.6
+      },
+      {
+        "label": "La Paz, Bolivia",
+        "value": 0.6
+      },
+      {
+        "label": "Puebla de Zaragoza, México",
+        "value": 0.6
+      },
+      {
+        "label": "Tijuana, Península de Baja California, México",
+        "value": 0.6
+      },
+      {
+        "label": "Bangkok, Tailandia",
+        "value": 0.5
+      }
+    ]
+  },
+  "publicoColombia": {
+    "edadSexo": [
+      {
+        "age": "18-24",
+        "mujeres": 8,
+        "hombres": 7.8
+      },
+      {
+        "age": "25-34",
+        "mujeres": 14.5,
+        "hombres": 14.1
+      },
+      {
+        "age": "35-44",
+        "mujeres": 11.2,
+        "hombres": 10
+      },
+      {
+        "age": "45-54",
+        "mujeres": 8,
+        "hombres": 6.8
+      },
+      {
+        "age": "55-64",
+        "mujeres": 6.1,
+        "hombres": 4.9
+      },
+      {
+        "age": "65+",
+        "mujeres": 4.8,
+        "hombres": 3.8
+      }
+    ],
+    "ciudades": [
+      {
+        "label": "Bogotá",
+        "value": 20.63
+      },
+      {
+        "label": "Medellín",
+        "value": 7.84
+      },
+      {
+        "label": "Cali",
+        "value": 5.67
+      },
+      {
+        "label": "Barranquilla",
+        "value": 4.28
+      },
+      {
+        "label": "Cartagena de Indias",
+        "value": 3.32
+      },
+      {
+        "label": "Soacha",
+        "value": 2.33
+      },
+      {
+        "label": "Bucaramanga",
+        "value": 2.09
+      },
+      {
+        "label": "Soledad (Atlántico)",
+        "value": 1.93
+      },
+      {
+        "label": "Cúcuta",
+        "value": 1.77
+      },
+      {
+        "label": "Bello (Antioquia)",
+        "value": 1.61
+      }
+    ]
+  }
+}

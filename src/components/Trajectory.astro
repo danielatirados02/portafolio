@@ -1,0 +1,57 @@
+---
+import { experience, education } from '../data/site';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<section id="trayectoria" class="py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <span class="eyebrow">Trayectoria</span>
+    <h2 class="section-title mb-14">Experiencia y estudios.</h2>
+
+    <div class="grid gap-14 lg:grid-cols-5">
+      <div class="lg:col-span-3">
+        <h3 class="mb-6 text-sm font-bold tracking-wider uppercase">Experiencia</h3>
+        <ol class="relative space-y-8 border-l-2 border-brand-accent/40 pl-8">
+          {
+            experience.map((job) => (
+              <li class="relative">
+                <span class="absolute top-2 -left-[41px] h-4 w-4 rounded-full border-4 border-brand-light bg-brand-accent" aria-hidden="true" />
+                <div class="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm md:p-8">
+                  <div class="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-bold tracking-wider text-gray-500 uppercase">
+                    <span>{job.period}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{job.mode}</span>
+                  </div>
+                  <h4 class="font-display text-2xl font-bold">{job.company}</h4>
+                  <p class="mb-3 font-medium text-brand-deep">{job.role}</p>
+                  <p class="mb-4 leading-relaxed text-gray-700">{job.summary}</p>
+                  <a href={`${base}/${job.link}`} class="nav-link text-sm font-bold">Ver el proyecto →</a>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="lg:col-span-2">
+        <h3 class="mb-6 text-sm font-bold tracking-wider uppercase">Estudios</h3>
+        <ul class="space-y-6">
+          {
+            education.map((ed) => (
+              <li class="rounded-3xl bg-brand-dark p-6 text-white md:p-8">
+                <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+                  <span class="text-xs font-bold tracking-wider text-gray-300 uppercase">{ed.period}</span>
+                  <span class:list={['rounded-full px-3 py-1 text-xs font-bold', ed.status === 'En curso' ? 'bg-brand-accent text-brand-dark' : 'border border-white/30 text-gray-200']}>
+                    {ed.status}
+                  </span>
+                </div>
+                <h4 class="font-display text-2xl font-bold">{ed.title}</h4>
+                <p class="text-gray-300">{ed.school}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

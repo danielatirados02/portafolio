@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'proyectos'>;
+  featured?: boolean;
+}
+
+const { project, featured = false } = Astro.props;
+const { data } = project;
+const href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/proyectos/${project.id}`;
+---
+
+<article class:list={['group relative flex flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm transition-all duration-500 hover:shadow-2xl', featured && 'md:col-span-2']}>
+  <div class="relative aspect-[4/3] overflow-hidden bg-brand-light p-5">
+    <Image
+      src={data.cover}
+      alt={data.coverAlt}
+      widths={[400, 700, 1000]}
+      sizes={featured ? '(min-width: 768px) 90vw, 95vw' : '(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 95vw'}
+      class:list={[
+        'h-full w-full rounded-xl object-cover shadow-md transition-transform duration-700 group-hover:scale-105',
+        data.coverPosition === 'center' ? 'object-center' : 'object-top',
+      ]}
+    />
+  </div>
+  <div class="flex flex-1 flex-col p-6 md:p-8">
+    <div class="mb-3 flex items-center justify-between gap-3">
+      <span class="rounded-full bg-brand-light px-3 py-1 text-xs font-bold tracking-wider text-brand-deep uppercase">{data.category}</span>
+      <span class="shrink-0 text-xs font-bold text-gray-500">{data.year}</span>
+    </div>
+    <h3 class="mb-3 font-display text-2xl font-bold">
+      <a href={href} class="after:absolute after:inset-0">{data.title}</a>
+    </h3>
+    <p class="mb-5 flex-1 text-sm leading-relaxed text-gray-600">{data.summary}</p>
+    <span class="text-sm font-bold text-brand-dark group-hover:text-brand-deep">Ver caso completo →</span>
+  </div>
+</article>

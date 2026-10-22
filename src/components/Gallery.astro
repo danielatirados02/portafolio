@@ -1,0 +1,109 @@
+---
+// Galería de un proyecto con lightbox accesible (<dialog> nativo, Esc y flechas).
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  folder: string;
+  title: string;
+  exclude?: string[];
+}
+
+const { folder, title, exclude = [] } = Astro.props;
+const all = import.meta.glob<{ default: ImageMetadata }>('/src/assets/proyectos/**/*.{jpg,jpeg,png}');
+const paths = Object.keys(all)
+  .filter((p) => p.startsWith(`/src/assets/proyectos/${folder}/`))
+  .filter((p) => !exclude.some((e) => p.endsWith(`/${e}`)))
+  .sort();
+const images = await Promise.all(
+  paths.map(async (p) => {
+    const src = (await all[p]()).default;
+    const full = await getImage({ src, width: Math.min(src.width, 1600), format: 'webp' });
+    return { src, full: full.src };
+  }),
+);
+---
+
+<div class="columns-1 gap-6 sm:columns-2 lg:columns-3 [&>*]:mb-6">
+  {
+    images.map((img, i) => (
+      <button
+        type="button"
+        class="group block w-full break-inside-avoid overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-xl"
+        data-lightbox={i}
+        data-full={img.full}
+        aria-label={`Ampliar imagen ${i + 1} de ${images.length}`}
+      >
+        <Image
+          src={img.src}
+          alt={`${title}: pieza ${i + 1} de ${images.length}`}
+          widths={[400, 700]}
+          sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 95vw"
+          class="h-auto w-full transition-transform duration-500 group-hover:scale-[1.02]"
+        />
+      </button>
+    ))
+  }
+</div>
+
+<dialog id="lightbox" class="m-auto h-dvh max-h-none w-screen max-w-none bg-brand-dark/95 p-0 backdrop:bg-brand-dark/80" aria-label={`Galería: ${title}`}>
+  <div class="flex h-full w-full items-center justify-center p-4 md:p-12">
+    <img data-lightbox-img alt="" class="max-h-full max-w-full rounded-xl object-contain shadow-2xl" />
+  </div>
+  <p data-lightbox-count class="absolute bottom-5 left-1/2 -translate-x-1/2 text-sm text-gray-300"></p>
+  <button type="button" data-lightbox-close class="absolute top-4 right-4 rounded-full p-2 text-white hover:text-brand-accent" aria-label="Cerrar">
+    <svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M6 18L18 6M6 6l12 12" /></svg>
+  </button>
+  <button type="button" data-lightbox-prev class="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-brand-accent hover:text-brand-dark md:left-6" aria-label="Anterior">
+    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M15 19l-7-7 7-7" /></svg>
+  </button>
+  <button type="button" data-lightbox-next class="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-brand-accent hover:text-brand-dark md:right-6" aria-label="Siguiente">
+    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M9 5l7 7-7 7" /></svg>
+  </button>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement;
+  const img = dialog.querySelector<HTMLImageElement>('[data-lightbox-img]')!;
+  const count = dialog.querySelector('[data-lightbox-count]')!;
+  const items = [...document.querySelectorAll<HTMLButtonElement>('[data-lightbox]')];
+  let current = 0;
+
+  const show = (i: number) => {
+    current = (i + items.length) % items.length;
+    const thumb = items[current].querySelector('img')!;
+    img.src = items[current].dataset.full!;
+    img.alt = thumb.alt;
+    count.textContent = `${current + 1} / ${items.length}`;
+  };
+
+  items.forEach((b, i) =>
+    b.addEventListener('click', () => {
+      show(i);
+      dialog.showModal();
+      document.body.style.overflow = 'hidden';
+    }),
+  );
+  dialog.addEventListener('close', () => {
+    document.body.style.overflow = '';
+    items[current]?.focus();
+  });
+  dialog.querySelector('[data-lightbox-close]')!.addEventListener('click', () => dialog.close());
+  dialog.querySelector('[data-lightbox-prev]')!.addEventListener('click', () => show(current - 1));
+  dialog.querySelector('[data-lightbox-next]')!.addEventListener('click', () => show(current + 1));
+  dialog.addEventListener('click', (e) => e.target === dialog.firstElementChild && dialog.close());
+  dialog.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+
+  // Deslizar en móvil
+  let x0: number | null = null;
+  dialog.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+  dialog.addEventListener('touchend', (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+</script>

@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Trajectory from '../components/Trajectory.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import KpiStrip from '../components/metrics/KpiStrip.astro';
+import Contact from '../components/Contact.astro';
+
+const projects = (await getCollection('proyectos')).sort((a, b) => a.data.order - b.data.order);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base>
+  <Hero />
+  <About />
+  <Trajectory />
+
+  <section id="proyectos" class="bg-white py-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div>
+          <span class="eyebrow">Trabajo seleccionado</span>
+          <h2 class="font-display text-4xl font-bold md:text-6xl">Proyectos.</h2>
+        </div>
+        <p class="max-w-md text-lg text-gray-600 md:text-right">
+          Branding, contenido y redes sociales. Cada caso muestra el reto, lo que hice y el resultado.
+        </p>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {projects.map((p) => <ProjectCard project={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="resultados" class="bg-brand-dark py-24 text-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 grid gap-6 lg:grid-cols-2 lg:items-end">
+        <div>
+          <span class="mb-4 block text-sm font-bold tracking-[0.18em] text-brand-accent uppercase">Resultados medibles</span>
+          <h2 class="font-display text-4xl font-bold md:text-5xl">Animal Lovers: de 5 mil a 4 millones de visualizaciones al mes.</h2>
+        </div>
+        <p class="text-lg text-gray-300">
+          Desde junio de 2025 gestiono el contenido de esta página de Facebook. Estas cifras comparan el promedio mensual antes y después de mi llegada, según los datos de Meta Business Suite.
+        </p>
+      </div>
+      <KpiStrip dark />
+      <a href={`${base}/proyectos/animal-lovers#dashboard`} class="btn-primary mt-10">
+        Ver el dashboard completo
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <Contact />
+</Base>

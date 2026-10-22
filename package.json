@@ -1,0 +1,23 @@
+{
+  "name": "portafolio-daniela-tirado",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portafolio de Daniela Tirado, Líder de Marketing, Marca y Contenido.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "metrics": "node scripts/build-metrics.mjs",
+    "assets": "node scripts/import-assets.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource/playfair-display": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^5.18.2",
+    "chart.js": "^4.6.1",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3"
+  }
+}

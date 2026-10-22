@@ -1,0 +1,16 @@
+---
+import { person } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-brand-accent/20 bg-brand-light py-10">
+  <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-center md:flex-row sm:px-6 lg:px-8">
+    <span class="font-display text-xl font-bold tracking-wide uppercase">Daniela Tirado<span class="text-brand-accent">.</span></span>
+    <p class="text-sm font-medium text-brand-dark/70">&copy; {year} {person.name}. Santa Marta, Colombia.</p>
+    <div class="flex gap-6 text-sm font-medium">
+      <a href={person.linkedin} target="_blank" rel="noopener" class="hover:text-brand-deep">LinkedIn</a>
+      <a href={person.whatsapp} target="_blank" rel="noopener" class="hover:text-brand-deep">WhatsApp</a>
+      <a href={`mailto:${person.email}`} class="hover:text-brand-deep">Correo</a>
+    </div>
+  </div>
+</footer>

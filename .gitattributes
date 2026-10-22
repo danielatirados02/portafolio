@@ -1,0 +1,5 @@
+* text=auto eol=lf
+# Las exportaciones de Meta vienen en UTF-16: no tocar sus finales de línea
+*.csv binary
+*.jpg binary
+*.png binary

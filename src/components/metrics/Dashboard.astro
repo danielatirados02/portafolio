@@ -1,0 +1,347 @@
+---
+// Dashboard de la página Animal Lovers construido con Chart.js.
+// Los datos salen de src/data/facebook/metrics.json (generado con `npm run metrics`).
+import KpiStrip from './KpiStrip.astro';
+import { metrics, fmt, monthLabel, monthLong, seriesMeta, compare, type SeriesKey } from '../../lib/metrics';
+
+const keys = Object.keys(seriesMeta) as SeriesKey[];
+const peak = compare('visualizaciones');
+const reels = metrics.formatos.publicado.find((f) => f.label === 'Reels')!.value;
+const fotos = metrics.formatos.publicado.find((f) => f.label === 'Fotos')!.value;
+const reelViews = metrics.formatos.visualizaciones.find((f) => f.label === 'Reels')!.value;
+const totalViews = metrics.formatos.visualizaciones.reduce((a, f) => a + f.value, 0);
+const reelShare = Math.round((reelViews / totalViews) * 100);
+---
+
+<div class="space-y-10" id="dashboard">
+  <KpiStrip />
+
+  <!-- Evolución mensual -->
+  <section class="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm md:p-8" aria-labelledby="evo-title">
+    <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h3 id="evo-title" class="font-display text-2xl font-bold md:text-3xl">Evolución mes a mes, 2025</h3>
+        <p class="mt-1 text-sm text-gray-600">El pico llegó en {monthLong(peak.peakMonth)} con {fmt(peak.peak)} visualizaciones. Las barras de enero a mayo casi no se ven por la escala: sus valores exactos están en la tabla.</p>
+      </div>
+      <ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-700" aria-label="Leyenda">
+        <li class="flex items-center gap-2"><span class="h-3 w-3 rounded-sm bg-gray-300"></span>Antes de mi gestión (ene–may)</li>
+        <li class="flex items-center gap-2"><span class="h-3 w-3 rounded-sm bg-chart-rose"></span>Desde que gestiono la página (jun–dic)</li>
+      </ul>
+    </div>
+
+    <div class="grid gap-8 md:grid-cols-2">
+      {
+        keys.map((k) => (
+          <figure>
+            <figcaption class="mb-3">
+              <span class="block font-bold">{seriesMeta[k].label}</span>
+              <span class="text-xs text-gray-500">{seriesMeta[k].hint}</span>
+            </figcaption>
+            <div class="relative h-56 md:h-64">
+              <canvas data-chart="monthly" data-key={k} role="img" aria-label={`${seriesMeta[k].label} por mes en 2025`} />
+            </div>
+          </figure>
+        ))
+      }
+    </div>
+
+    <details class="mt-8 rounded-2xl bg-brand-light p-4 text-sm">
+      <summary class="cursor-pointer font-bold">Ver los datos en tabla</summary>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full min-w-[560px] text-right tabular-nums">
+          <thead>
+            <tr class="border-b border-gray-300 text-xs tracking-wider text-gray-600 uppercase">
+              <th class="py-2 text-left">Mes</th>
+              {keys.map((k) => <th class="py-2 pl-4">{seriesMeta[k].label}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              metrics.months.map((m, i) => (
+                <tr class:list={['border-b border-gray-200', m === metrics.startMonth && 'border-t-2 border-t-brand-accent']}>
+                  <td class="py-2 text-left capitalize">{monthLabel(m)}</td>
+                  {keys.map((k) => <td class="py-2 pl-4">{fmt(metrics.series[k][i])}</td>)}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <!-- Formatos -->
+  <section class="grid gap-8 lg:grid-cols-5" aria-label="Rendimiento por formato">
+    <div class="rounded-3xl bg-brand-dark p-6 text-white md:p-8 lg:col-span-2">
+      <span class="text-xs font-bold tracking-wider text-brand-accent uppercase">Por qué funcionó</span>
+      <p class="mt-4 font-display text-5xl font-bold md:text-6xl">{reelShare} %</p>
+      <p class="mt-3 text-gray-300">
+        de las visualizaciones vinieron de reels. Publiqué {reels} reels y {fotos} fotos, y enfoqué la estrategia en video corto porque es el formato que Facebook más distribuye.
+      </p>
+    </div>
+    <figure class="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm md:p-8 lg:col-span-3">
+      <figcaption class="mb-4">
+        <span class="block font-bold">Visualizaciones por formato</span>
+        <span class="text-xs text-gray-500">Acumulado de 2025</span>
+      </figcaption>
+      <div class="relative h-64">
+        <canvas data-chart="formatos" role="img" aria-label="Visualizaciones por formato de contenido"></canvas>
+      </div>
+    </figure>
+  </section>
+
+  <!-- Público -->
+  <section class="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm md:p-8" aria-labelledby="pub-title">
+    <div class="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h3 id="pub-title" class="font-display text-2xl font-bold md:text-3xl">¿Quién ve el contenido?</h3>
+        <p class="mt-1 text-sm text-gray-600">Porcentaje del público de la página.</p>
+      </div>
+      <div class="inline-flex self-start rounded-full bg-brand-light p-1 text-sm font-bold" role="group" aria-label="Filtrar público">
+        <button type="button" data-audience="publico" aria-pressed="true" class="rounded-full px-4 py-2 aria-pressed:bg-brand-dark aria-pressed:text-white">Todos los países</button>
+        <button type="button" data-audience="publicoColombia" aria-pressed="false" class="rounded-full px-4 py-2 aria-pressed:bg-brand-dark aria-pressed:text-white">Solo Colombia</button>
+      </div>
+    </div>
+
+    <div class="grid gap-10 lg:grid-cols-2">
+      <figure>
+        <figcaption class="mb-3 font-bold">Edad y sexo</figcaption>
+        <div class="relative h-72">
+          <canvas data-chart="edad" role="img" aria-label="Distribución del público por edad y sexo"></canvas>
+        </div>
+      </figure>
+      <figure>
+        <figcaption class="mb-3 font-bold" data-geo-title>Principales países</figcaption>
+        <div class="relative h-72">
+          <canvas data-chart="geo" role="img" aria-label="Principales ubicaciones del público"></canvas>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <p class="text-xs text-gray-500">
+    Fuente: {metrics.source}. Página: <a href={metrics.page.url} target="_blank" rel="noopener" class="underline">{metrics.page.name}</a>. Los datos de enero a mayo corresponden al periodo anterior a mi gestión.
+  </p>
+</div>
+
+<script type="application/json" id="fb-data" set:html={JSON.stringify(metrics)} />
+
+<script>
+  import {
+    Chart,
+    BarController,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Tooltip,
+    Legend,
+    type Plugin,
+  } from 'chart.js';
+
+  Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+
+  const data = JSON.parse(document.getElementById('fb-data')!.textContent!);
+  const ROSE = '#C25A78';
+  const BLUE = '#3F64A8';
+  const MUTED = '#CBD5E1';
+  const GRID = '#EEF0F3';
+  const INK = '#0F172A';
+  const INK2 = '#475569';
+
+  Chart.defaults.font.family = "'DM Sans Variable', system-ui, sans-serif";
+  Chart.defaults.color = INK2;
+  Chart.defaults.plugins.tooltip.backgroundColor = INK;
+  Chart.defaults.plugins.tooltip.padding = 10;
+  Chart.defaults.plugins.tooltip.cornerRadius = 8;
+  Chart.defaults.plugins.tooltip.displayColors = false;
+
+  const nf = new Intl.NumberFormat('es-CO');
+  const nf1 = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 1 });
+  const cf = { format: (n: number) => (n >= 1e6 ? `${nf1.format(n / 1e6)} M` : n >= 1e3 ? `${nf1.format(n / 1e3)} mil` : nf.format(n)) };
+  const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  const labels: string[] = data.months.map((m: string) => months[Number(m.slice(5, 7)) - 1]);
+  const start = data.months.indexOf(data.startMonth);
+  const isMobile = () => window.matchMedia('(max-width: 640px)').matches;
+
+  // Escribe el valor al final de cada barra horizontal (etiquetas directas).
+  const endLabels = (format: (v: number) => string): Plugin<'bar'> => ({
+    id: 'endLabels',
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      ctx.save();
+      ctx.font = "600 12px 'DM Sans Variable', system-ui, sans-serif";
+      ctx.fillStyle = INK;
+      ctx.textBaseline = 'middle';
+      chart.data.datasets.forEach((ds, di) => {
+        chart.getDatasetMeta(di).data.forEach((bar, i) => {
+          const v = ds.data[i] as number;
+          ctx.fillText(format(v), bar.x + 6, bar.y);
+        });
+      });
+      ctx.restore();
+    },
+  });
+
+  // Línea vertical que marca el inicio de la gestión.
+  const startMarker: Plugin<'bar'> = {
+    id: 'startMarker',
+    afterDraw(chart) {
+      const x0 = chart.scales.x.getPixelForValue(start - 0.5);
+      const { top, bottom } = chart.chartArea;
+      const { ctx } = chart;
+      ctx.save();
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x0, top);
+      ctx.lineTo(x0, bottom);
+      ctx.stroke();
+      ctx.font = "600 11px 'DM Sans Variable', system-ui, sans-serif";
+      ctx.fillStyle = INK;
+      ctx.textAlign = 'right';
+      ctx.fillText('Inicio de mi gestión', x0 - 6, top + 10);
+      ctx.restore();
+    },
+  };
+
+  const hairlineGrid = { color: GRID, drawTicks: false, lineWidth: 1 };
+
+  // 1. Series mensuales (small multiples, una medida por gráfica)
+  document.querySelectorAll<HTMLCanvasElement>('canvas[data-chart="monthly"]').forEach((canvas) => {
+    const key = canvas.dataset.key!;
+    const values: number[] = data.series[key];
+    new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            data: values,
+            backgroundColor: values.map((_, i) => (i < start ? MUTED : ROSE)),
+            hoverBackgroundColor: values.map((_, i) => (i < start ? '#94A3B8' : '#A8506A')),
+            borderRadius: 4,
+            borderSkipped: 'start',
+            maxBarThickness: 24,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: { padding: { top: 6 } },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: (items) => `${labels[items[0].dataIndex]} 2025`,
+              label: (item) => nf.format(item.parsed.y),
+            },
+          },
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: GRID } },
+          y: {
+            beginAtZero: true,
+            grid: hairlineGrid,
+            border: { display: false },
+            ticks: { maxTicksLimit: 5, padding: 8, callback: (v) => cf.format(Number(v)) },
+          },
+        },
+      },
+      plugins: [startMarker],
+    });
+  });
+
+  // 2. Visualizaciones por formato (los formatos menores se agrupan en «Otros»)
+  const fv: { label: string; value: number }[] = data.formatos.visualizaciones;
+  const main = fv.slice(0, 4);
+  const rest = fv.slice(4).reduce((a, f) => a + f.value, 0);
+  const formatos = [...main, { label: 'Otros', value: rest }];
+  new Chart(document.querySelector<HTMLCanvasElement>('canvas[data-chart="formatos"]')!, {
+    type: 'bar',
+    data: {
+      labels: formatos.map((f) => f.label),
+      datasets: [{ data: formatos.map((f) => f.value), backgroundColor: ROSE, hoverBackgroundColor: '#A8506A', borderRadius: 4, borderSkipped: 'start', maxBarThickness: 24 }],
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { right: 56 } },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: (i) => `${nf.format(i.parsed.x)} visualizaciones` } } },
+      scales: {
+        x: { display: false, beginAtZero: true },
+        y: { grid: { display: false }, border: { display: false }, ticks: { color: INK, font: { weight: 600 } } },
+      },
+    },
+    plugins: [endLabels((v) => cf.format(v))],
+  });
+
+  // 3. Público: edad y sexo + ubicaciones, con filtro
+  const ageChart = new Chart(document.querySelector<HTMLCanvasElement>('canvas[data-chart="edad"]')!, {
+    type: 'bar',
+    data: { labels: [], datasets: [] },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { right: 36 } },
+      plugins: {
+        legend: { position: 'top', align: 'start', labels: { boxWidth: 12, boxHeight: 12, useBorderRadius: true, borderRadius: 2, color: INK } },
+        tooltip: { displayColors: true, callbacks: { label: (i) => ` ${i.dataset.label}: ${i.parsed.x} %` } },
+      },
+      scales: {
+        x: { display: false, beginAtZero: true },
+        y: { grid: { display: false }, border: { display: false }, ticks: { color: INK } },
+      },
+    },
+    plugins: [endLabels((v) => `${v} %`)],
+  });
+
+  const geoChart = new Chart(document.querySelector<HTMLCanvasElement>('canvas[data-chart="geo"]')!, {
+    type: 'bar',
+    data: { labels: [], datasets: [] },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { right: 44 } },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: (i) => `${i.parsed.x} % del público` } } },
+      scales: {
+        x: { display: false, beginAtZero: true },
+        y: {
+          grid: { display: false },
+          border: { display: false },
+          ticks: { color: INK, autoSkip: false, callback(v) { const l = String(this.getLabelForValue(Number(v))).split(',')[0]; return isMobile() && l.length > 14 ? l.slice(0, 13) + '…' : l; } },
+        },
+      },
+    },
+    plugins: [endLabels((v) => `${v} %`)],
+  });
+
+  const geoTitle = document.querySelector('[data-geo-title]')!;
+  const bar = { borderRadius: 4, borderSkipped: 'start' as const, maxBarThickness: 14 };
+
+  function showAudience(key: 'publico' | 'publicoColombia') {
+    const aud = data[key];
+    ageChart.data.labels = aud.edadSexo.map((r: any) => r.age);
+    ageChart.data.datasets = [
+      { label: 'Mujeres', data: aud.edadSexo.map((r: any) => r.mujeres), backgroundColor: ROSE, ...bar },
+      { label: 'Hombres', data: aud.edadSexo.map((r: any) => r.hombres), backgroundColor: BLUE, ...bar },
+    ];
+    ageChart.update();
+
+    const geo = key === 'publico' ? aud.paises : aud.ciudades;
+    geoTitle.textContent = key === 'publico' ? 'Principales países' : 'Principales ciudades de Colombia';
+    geoChart.data.labels = geo.map((g: any) => g.label);
+    geoChart.data.datasets = [{ data: geo.map((g: any) => g.value), backgroundColor: ROSE, hoverBackgroundColor: '#A8506A', ...bar }];
+    geoChart.update();
+
+    document.querySelectorAll('[data-audience]').forEach((b) => b.setAttribute('aria-pressed', String(b.getAttribute('data-audience') === key)));
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-audience]').forEach((b) =>
+    b.addEventListener('click', () => showAudience(b.dataset.audience as 'publico' | 'publicoColombia')),
+  );
+  showAudience('publico');
+</script>

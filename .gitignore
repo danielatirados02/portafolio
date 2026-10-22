@@ -1,0 +1,18 @@
+# Dependencias y build
+node_modules/
+dist/
+.astro/
+
+# Material original (las copias optimizadas viven en src/assets y src/data)
+/Proyectos/
+/CV/
+/me.png
+/portafolio_web.html
+
+# Herramientas locales
+.playwright-mcp/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+.env*

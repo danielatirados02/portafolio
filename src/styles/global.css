@@ -1,0 +1,92 @@
+@import 'tailwindcss';
+@import '@fontsource/playfair-display/400.css';
+@import '@fontsource/playfair-display/400-italic.css';
+@import '@fontsource/playfair-display/600.css';
+@import '@fontsource/playfair-display/700.css';
+@import '@fontsource-variable/dm-sans';
+
+/* Identidad de marca: azul medianoche, palo de rosa y rosa nube */
+@theme {
+  --color-brand-dark: #0f172a;
+  --color-brand-accent: #d58b9e;
+  --color-brand-deep: #a8506a; /* palo de rosa oscuro para texto pequeño (contraste AA) */
+  --color-brand-light: #fdf2f8;
+  --color-chart-rose: #c25a78;
+  --color-chart-blue: #3f64a8;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans Variable', system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-brand-light font-body text-brand-dark antialiased;
+  }
+  ::selection {
+    @apply bg-brand-accent text-brand-dark;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand-deep);
+    outline-offset: 3px;
+  }
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--color-brand-light); }
+::-webkit-scrollbar-thumb { background: var(--color-brand-dark); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-brand-accent); }
+
+@layer components {
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--color-brand-accent);
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  .eyebrow {
+    @apply mb-4 block text-xs font-bold tracking-[0.18em] text-brand-deep uppercase md:text-sm;
+  }
+  .section-title {
+    @apply font-display text-4xl font-bold text-brand-dark md:text-5xl;
+  }
+  .chip {
+    @apply rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-bold text-brand-dark shadow-sm;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-brand-accent px-8 py-4 font-bold text-brand-dark shadow-lg shadow-brand-accent/30 transition-all duration-300 hover:scale-105 hover:bg-brand-dark hover:text-brand-light;
+  }
+  .btn-outline {
+    @apply inline-flex items-center gap-2 rounded-full border-2 border-brand-dark px-8 py-[14px] font-bold text-brand-dark transition-colors duration-300 hover:bg-brand-dark hover:text-brand-light;
+  }
+  .prose-project h2 {
+    @apply mt-10 mb-4 font-display text-2xl font-bold text-brand-dark md:text-3xl;
+  }
+  .prose-project p {
+    @apply mb-4 leading-relaxed text-gray-700;
+  }
+  .prose-project ul {
+    @apply mb-4 space-y-2 pl-5 text-gray-700;
+    list-style: disc;
+  }
+  .prose-project li::marker { color: var(--color-brand-accent); }
+  .prose-project strong { @apply text-brand-dark; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

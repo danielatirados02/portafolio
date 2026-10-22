@@ -1,0 +1,71 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Gallery from '../../components/Gallery.astro';
+import Dashboard from '../../components/metrics/Dashboard.astro';
+import Contact from '../../components/Contact.astro';
+
+export async function getStaticPaths() {
+  const projects = (await getCollection('proyectos')).sort((a, b) => a.data.order - b.data.order);
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+const { project, next } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base title={data.title} description={data.summary}>
+  <article class="px-4 pt-32 pb-20 md:pt-40">
+    <div class="mx-auto max-w-7xl sm:px-2 lg:px-4">
+      <a href={`${base}/#proyectos`} class="nav-link text-sm font-bold">← Volver a proyectos</a>
+
+      <header class="mt-8 grid items-center gap-10 lg:grid-cols-2">
+        <div>
+          <div class="mb-4 flex flex-wrap items-center gap-3">
+            <span class="rounded-full bg-white px-3 py-1 text-xs font-bold tracking-wider text-brand-deep uppercase">{data.category}</span>
+            <span class="text-xs font-bold text-gray-500">{data.year}</span>
+          </div>
+          <h1 class="mb-6 font-display text-4xl leading-tight font-bold md:text-6xl">{data.title}</h1>
+          <p class="text-lg leading-relaxed text-gray-700 md:text-xl">{data.summary}</p>
+          <ul class="mt-6 flex flex-wrap gap-2" aria-label="Disciplinas">
+            {data.tags.map((t) => <li class="chip">{t}</li>)}
+          </ul>
+        </div>
+        <div class="overflow-hidden rounded-3xl border-4 border-white bg-white shadow-2xl">
+          <Image src={data.cover} alt={data.coverAlt} widths={[500, 800, 1100]} sizes="(min-width: 1024px) 45vw, 95vw" loading="eager" class="max-h-[560px] w-full object-cover object-top" />
+        </div>
+      </header>
+
+      <div class="prose-project mt-16 max-w-3xl">
+        <Content />
+      </div>
+
+      {
+        data.dashboard && (
+          <section class="mt-16" aria-labelledby="dash-title">
+            <span class="eyebrow">Dashboard</span>
+            <h2 id="dash-title" class="section-title mb-10">Las métricas de la página.</h2>
+            <Dashboard />
+          </section>
+        )
+      }
+
+      <section class="mt-20" aria-labelledby="gal-title">
+        <h2 id="gal-title" class="section-title mb-8">{data.dashboard ? 'Así se ve la página' : 'Galería'}</h2>
+        <Gallery folder={data.folder} title={data.title} exclude={project.id === 'outrix-intelligence' ? ['portada.jpg'] : []} />
+      </section>
+
+      <nav class="mt-20 border-t border-gray-200 pt-10" aria-label="Siguiente proyecto">
+        <span class="text-xs font-bold tracking-wider text-gray-500 uppercase">Siguiente proyecto</span>
+        <a href={`${base}/proyectos/${next.id}`} class="mt-2 block font-display text-3xl font-bold hover:text-brand-deep md:text-4xl">{next.data.title} →</a>
+      </nav>
+    </div>
+  </article>
+  <Contact />
+</Base>
